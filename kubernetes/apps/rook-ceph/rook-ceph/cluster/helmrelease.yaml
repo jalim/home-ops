@@ -136,10 +136,10 @@ spec:
             port: 80
             resources:
               requests:
-                cpu: 1000m
+                cpu: 500m
                 memory: 1Gi
               limits:
-                memory: 2Gi
+                memory: 1Gi
             instances: 2
           healthCheck:
             bucket:
