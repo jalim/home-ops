@@ -6,3 +6,4 @@ resources:
 
 # Apps:
   - ./sonarr/ks.yaml
+  - ./radarr/ks.yaml
