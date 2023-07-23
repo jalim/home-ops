@@ -91,14 +91,6 @@ spec:
         server: 10.1.2.205
         path: /mnt/dead/media
         mountPath: /media
-      scripts:
-        enabled: true
-        type: configMap
-        name: sonarr-configmap
-        subPath: pushover-notify.sh
-        mountPath: /scripts/pushover-notify.sh
-        defaultMode: 0775
-        readOnly: true
     resources:
       requests:
         cpu: 10m
