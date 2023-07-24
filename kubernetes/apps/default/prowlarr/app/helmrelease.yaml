@@ -25,11 +25,6 @@ spec:
       retries: 3
   uninstall:
     keepHistory: false
-  dependsOn:
-    - name: rook-ceph-cluster
-      namespace: rook-ceph
-    - name: volsync
-      namespace: volsync
   values:
     initContainers:
       01-init-db:
@@ -46,7 +41,7 @@ spec:
       repository: ghcr.io/onedr0p/prowlarr-develop
       tag: 1.7.3.3764@sha256:5d3fca22382f7d52ccd82c9c561c27870ec815360e996523c9ca7fe48c1509fc
     env:
-      TZ: America/New_York
+      TZ: Australia/Perth
       PROWLARR__INSTANCE_NAME: Prowlarr
       PROWLARR__PORT: &port 80
       PROWLARR__LOG_LEVEL: info
@@ -75,14 +70,10 @@ spec:
     ingress:
       main:
         enabled: true
-        ingressClassName: internal
+        ingressClassName: nginx
         annotations:
-          nginx.ingress.kubernetes.io/configuration-snippet: |
-            proxy_set_header Accept-Encoding "";
-            sub_filter '</head>' '<link rel="stylesheet" type="text/css" href="https://theme-park.devbu.io/css/base/prowlarr/nord.css"></head>';
-            sub_filter_once on;
         hosts:
-          - host: &host "{{ .Release.Name }}.devbu.io"
+          - host: &host "{{ .Release.Name }}.brewcode.xyz"
             paths:
               - path: /
                 pathType: Prefix
@@ -90,9 +81,9 @@ spec:
           - hosts:
               - *host
     podSecurityContext:
-      runAsUser: 568
-      runAsGroup: 568
-      fsGroup: 568
+      runAsUser: 1000
+      runAsGroup: 1000
+      fsGroup: 1000
       fsGroupChangePolicy: OnRootMismatch
     persistence:
       config:
