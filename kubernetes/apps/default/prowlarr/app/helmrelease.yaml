@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: autobrr
+  name: prowlarr
   namespace: default
 spec:
   interval: 30m
@@ -26,6 +26,8 @@ spec:
   uninstall:
     keepHistory: false
   dependsOn:
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
     - name: volsync
       namespace: volsync
   values:
@@ -35,29 +37,50 @@ spec:
         imagePullPolicy: IfNotPresent
         envFrom: &envFrom
           - secretRef:
-              name: autobrr-secret
+              name: prowlarr-secret
     controller:
       type: statefulset
       annotations:
         reloader.stakater.com/auto: "true"
     image:
-      repository: ghcr.io/autobrr/autobrr
-      tag: v1.27.1
+      repository: ghcr.io/onedr0p/prowlarr-develop
+      tag: 1.7.3.3764@sha256:5d3fca22382f7d52ccd82c9c561c27870ec815360e996523c9ca7fe48c1509fc
     env:
-      AUTOBRR__CHECKFORUPDATES: "false"
-      AUTOBRR__HOST: 0.0.0.0
-      AUTOBRR__PORT: &port 80
-      AUTOBRR__LOGLEVEL: TRACE
+      TZ: America/New_York
+      PROWLARR__INSTANCE_NAME: Prowlarr
+      PROWLARR__PORT: &port 80
+      PROWLARR__LOG_LEVEL: info
+      PROWLARR__AUTHENTICATION_METHOD: External
     envFrom: *envFrom
     service:
       main:
         ports:
           http:
             port: *port
+    probes:
+      liveness: &probes
+        enabled: true
+        custom: true
+        spec:
+          httpGet:
+            path: /ping
+            port: *port
+          initialDelaySeconds: 0
+          periodSeconds: 10
+          timeoutSeconds: 1
+          failureThreshold: 3
+      readiness: *probes
+      startup:
+        enabled: false
     ingress:
       main:
         enabled: true
         ingressClassName: internal
+        annotations:
+          nginx.ingress.kubernetes.io/configuration-snippet: |
+            proxy_set_header Accept-Encoding "";
+            sub_filter '</head>' '<link rel="stylesheet" type="text/css" href="https://theme-park.devbu.io/css/base/prowlarr/nord.css"></head>';
+            sub_filter_once on;
         hosts:
           - host: &host "{{ .Release.Name }}.devbu.io"
             paths:
@@ -75,16 +98,9 @@ spec:
       config:
         enabled: true
         type: emptyDir
-      config-file:
-        enabled: true
-        type: configMap
-        name: autobrr-configmap
-        subPath: config.toml
-        mountPath: /config/config.toml
-        readOnly: true
     resources:
       requests:
-        memory: 250Mi
         cpu: 10m
+        memory: 100Mi
       limits:
         memory: 500Mi
