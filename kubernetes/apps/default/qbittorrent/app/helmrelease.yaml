@@ -25,22 +25,22 @@ spec:
       retries: 3
   uninstall:
     keepHistory: false
-  dependsOn:
-    - name: rook-ceph-cluster
-      namespace: rook-ceph
-    - name: volsync
-      namespace: volsync
+  # dependsOn:
+  #   - name: rook-ceph-cluster
+  #     namespace: rook-ceph
+  #   - name: volsync
+  #     namespace: volsync
   values:
     controller:
       type: statefulset
-      annotations:
-        configmap.reloader.stakater.com/reload: qbittorrent-scripts
-        secret.reloader.stakater.com/reload: cross-seed-secret
+      # annotations:
+        # configmap.reloader.stakater.com/reload: qbittorrent-scripts
+        # secret.reloader.stakater.com/reload: cross-seed-secret
     image:
       repository: ghcr.io/onedr0p/qbittorrent
       tag: 4.5.4@sha256:f0a74313d750bc437ba2ad34f3412de5ab9a978f3f5b74227a1bda69271fef3e
     env:
-      TZ: America/New_York
+      TZ: Australia/Perth
       QBITTORRENT__PORT: &port 80
       QBITTORRENT__BT_PORT: &bittorrentPort 50413
       QBT_Application__MemoryWorkingSetLimit: 12000
@@ -49,13 +49,13 @@ spec:
         ports:
           http:
             port: *port
-          cross-seed:
-            port: 2468
+          # cross-seed:
+          #   port: 2468
       bittorrent:
         enabled: true
         type: LoadBalancer
         annotations:
-          io.cilium/lb-ipam-ips: 192.168.42.202
+          io.cilium/lb-ipam-ips: 10.1.2.23
         ports:
           bittorrent:
             enabled: true
@@ -66,17 +66,17 @@ spec:
     ingress:
       main:
         enabled: true
-        ingressClassName: internal
+        ingressClassName: nginx
         annotations:
           nginx.ingress.kubernetes.io/configuration-snippet: |
             proxy_hide_header "x-webkit-csp";
             proxy_hide_header "content-security-policy";
             proxy_hide_header "X-Frame-Options";
             proxy_set_header Accept-Encoding "";
-            sub_filter '</head>' '<link rel="stylesheet" type="text/css" href="https://theme-park.devbu.io/css/base/qbittorrent/nord.css"></head>';
-            sub_filter_once on;
+            # sub_filter '</head>' '<link rel="stylesheet" type="text/css" href="https://theme-park.devbu.io/css/base/qbittorrent/nord.css"></head>';
+            # sub_filter_once on;
         hosts:
-          - host: &host qb.devbu.io
+          - host: &host qb.brewcode.xyz
             paths:
               - path: /
                 pathType: Prefix
@@ -84,9 +84,9 @@ spec:
           - hosts:
               - *host
     podSecurityContext:
-      runAsUser: 568
-      runAsGroup: 568
-      fsGroup: 568
+      runAsUser: 1000
+      runAsGroup: 1000
+      fsGroup: 1000
       fsGroupChangePolicy: OnRootMismatch
       supplementalGroups: [10000]
     volumeClaimTemplates:
@@ -94,7 +94,7 @@ spec:
         mountPath: /config
         accessMode: ReadWriteOnce
         size: 1Gi
-        storageClass: ceph-block
+        storageClass: nfs-storage
     # Note: If downloading very large torrents it might be worth using NFS for your download directory.
     # Beware if you are downloading torrents directly to a ZFS dataset that dataset will accrue fragmentation.
     persistence:
@@ -115,13 +115,13 @@ spec:
         subPath: completed.sh
         defaultMode: 0775
         readOnly: true
-      cross-seed-config:
-        enabled: true
-        type: secret
-        name: cross-seed-secret
-        mountPath: /config/config.js
-        subPath: config.js
-        readOnly: true
+      #cross-seed-config:
+      #  enabled: true
+      #  type: secret
+      #  name: cross-seed-secret
+      #  mountPath: /config/config.js
+      #  subPath: config.js
+      #  readOnly: true
     nodeSelector:
       node-role.kubernetes.io/worker: "true"
     resources:
@@ -129,18 +129,18 @@ spec:
         cpu: 10m
         memory: 250Mi
       limits:
-        memory: 16Gi
-    sidecars:
-      # TODO: cross-seed doesn't work with qBittorrent & SQLite
-      # https://github.com/cross-seed/cross-seed/issues/365
-      # cross-seed:
-      #   image: ghcr.io/cross-seed/cross-seed:version-5.2.0
-      #   imagePullPolicy: IfNotPresent
-      #   args: ["daemon"]
-      #   volumeMounts:
-      #     - { name: config, mountPath: /config }
-      #     - { name: cross-seed-config, mountPath: /config/config.js, subPath: config.js, readOnly: true }
-      reannounce:
-        image: ghcr.io/buroa/qbittools:v0.1.1
-        imagePullPolicy: IfNotPresent
-        args: ["reannounce", "-s", "localhost", "-p", "80"]
+        memory: 4Gi
+    # sidecars:
+    #   TODO: cross-seed doesn't work with qBittorrent & SQLite
+    #   https://github.com/cross-seed/cross-seed/issues/365
+    #   cross-seed:
+    #     image: ghcr.io/cross-seed/cross-seed:version-5.2.0
+    #     imagePullPolicy: IfNotPresent
+    #     args: ["daemon"]
+    #     volumeMounts:
+    #       - { name: config, mountPath: /config }
+    #       - { name: cross-seed-config, mountPath: /config/config.js, subPath: config.js, readOnly: true }
+    #   reannounce:
+    #     image: ghcr.io/buroa/qbittools:v0.1.1
+    #     imagePullPolicy: IfNotPresent
+    #     args: ["reannounce", "-s", "localhost", "-p", "80"]
