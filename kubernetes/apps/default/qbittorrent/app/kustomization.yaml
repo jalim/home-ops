@@ -9,10 +9,10 @@ resources:
   # - ./volsync.yaml
   - ./gatus.yaml
   # - ./qbittools-tagging
-configMapGenerator:
-  - name: qbittorrent-scripts
-    files:
-      - ./config/completed.sh
+# configMapGenerator:
+  # - name: qbittorrent-scripts
+    # files:
+      # - ./config/completed.sh
   # - name: cross-seed-config-tpl
   #   files:
   #     - ./config/config.js

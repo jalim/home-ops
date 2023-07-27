@@ -99,27 +99,12 @@ spec:
       media:
         enabled: true
         type: nfs
-        server: expanse.turbo.ac
-        path: /eros/Media
+        server: 10.1.2.205
+        path: /mnt/dead/media
         mountPath: /media
       incomplete:
         enabled: true
         type: emptyDir
-      completed-script:
-        enabled: true
-        type: configMap
-        name: qbittorrent-scripts
-        mountPath: /scripts/completed.sh
-        subPath: completed.sh
-        defaultMode: 0775
-        readOnly: true
-      #cross-seed-config:
-      #  enabled: true
-      #  type: secret
-      #  name: cross-seed-secret
-      #  mountPath: /config/config.js
-      #  subPath: config.js
-      #  readOnly: true
     nodeSelector:
       node-role.kubernetes.io/worker: "true"
     resources:
