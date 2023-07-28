@@ -8,7 +8,7 @@ spec:
     port: 80
     protocol: TCP
     targetPort: 80
-  clusterIP: None
+  clusterIP: 10.43.122.221
   type: ClusterIP
 ---
 apiVersion: v1
