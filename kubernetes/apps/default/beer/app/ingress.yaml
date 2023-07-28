@@ -14,3 +14,6 @@ spec:
             name: beer
             port:
               number: 80
+  tls:
+  - hosts:
+    - beer.brewcode.xyz
