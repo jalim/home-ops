@@ -23,3 +23,6 @@ kubernetes:
         node3:
           ansible_user: luke
           ansible_host: 10.1.2.16
+        node4:
+          ansible_user: luke
+          ansible_host: 10.1.2.17
