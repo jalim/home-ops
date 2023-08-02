@@ -30,14 +30,17 @@ spec:
     controller:
       type: statefulset
     image:
-      repository: ghcr.io/onedr0p/sonarr
-      tag: 3.0.10.1567@sha256:915c17f3b990ce0119c27e31743862e2a91d62caf19e401108ca74d95a6124ec
+      repository: ghcr.io/onedr0p/sonarr-develop
+      tag: 4.0.0.582@sha256:40fda381027aaabda917a25b1dd62e9c73ffd53caf3ec2e2244b11d5da95f17f
     env:
       TZ: Australia/Perth
       PUSHOVER_DEBUG: "false"
       SONARR__INSTANCE_NAME: Sonarr
       SONARR__PORT: &port 80
       SONARR__LOG_LEVEL: info
+    envFrom:
+      - secretRef:
+          name: sonarr-secret
     service:
       main:
         ports:

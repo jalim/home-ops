@@ -6,3 +6,9 @@ namespace: default
 resources:
   - ./helmrelease.yaml
   - ./gatus.yaml
+  - ./externalsecret.yaml
+
+configMapGenerator:
+  - name: sonarr-configmap
+    files:
+      - ./scripts/pushover-notify.sh
