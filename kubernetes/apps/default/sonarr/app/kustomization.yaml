@@ -8,7 +8,7 @@ resources:
   - ./gatus.yaml
   - ./externalsecret.yaml
 
-configMapGenerator:
-  - name: sonarr-configmap
-    files:
-      - ./scripts/pushover-notify.sh
+#configMapGenerator:
+#  - name: sonarr-configmap
+#    files:
+#      - ./scripts/pushover-notify.sh
