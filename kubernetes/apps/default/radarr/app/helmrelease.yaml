@@ -31,7 +31,7 @@ spec:
       type: statefulset
     image:
       repository: ghcr.io/onedr0p/radarr
-      tag: rolling
+      tag: 4.5.2.7388@sha256:c63018900ec725a8ff5c652a11970b7661288bb6801e1ae25ff2d825a932dc36
     env:
       TZ: Australia/Perth
       PUSHOVER_DEBUG: "false"
