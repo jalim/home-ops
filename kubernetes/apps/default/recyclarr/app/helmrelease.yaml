@@ -25,11 +25,11 @@ spec:
       retries: 3
   uninstall:
     keepHistory: false
-  dependsOn:
-    - name: rook-ceph-cluster
-      namespace: rook-ceph
-    - name: volsync
-      namespace: volsync
+  # dependsOn:
+  #   - name: rook-ceph-cluster
+  #     namespace: rook-ceph
+  #   - name: volsync
+  #     namespace: volsync
   values:
     controller:
       type: statefulset
@@ -39,7 +39,7 @@ spec:
       repository: ghcr.io/recyclarr/recyclarr
       tag: 5.1.1
     env:
-      TZ: America/New_York
+      TZ: Australia/Perth
     envFrom:
       - secretRef:
           name: recyclarr-secret
@@ -47,16 +47,16 @@ spec:
       main:
         enabled: false
     podSecurityContext:
-      runAsUser: 568
-      runAsGroup: 568
-      fsGroup: 568
+      runAsUser: 1000
+      runAsGroup: 1000
+      fsGroup: 1000
       fsGroupChangePolicy: OnRootMismatch
     volumeClaimTemplates:
       - name: config
         mountPath: /config
         accessMode: ReadWriteOnce
         size: 1Gi
-        storageClass: ceph-block
+        storageClass: nfs-storage
     persistence:
       config-file:
         enabled: true

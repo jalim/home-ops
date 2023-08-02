@@ -11,3 +11,4 @@ resources:
   - ./sabnzbd/ks.yaml
   - ./qbittorrent/ks.yaml
   - ./beer/ks.yaml
+  - ./recyclarr/ks.yaml
