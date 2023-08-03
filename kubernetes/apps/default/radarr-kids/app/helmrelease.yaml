@@ -33,7 +33,7 @@ spec:
         imagePullPolicy: IfNotPresent
         envFrom: &envFrom
           - secretRef:
-              name: radarr-secret
+              name: radarr-kids-secret
     controller:
       type: statefulset
       annotations:
