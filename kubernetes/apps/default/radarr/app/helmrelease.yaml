@@ -27,17 +27,28 @@ spec:
   uninstall:
     keepHistory: false
   values:
+    initContainers:
+      01-init-db:
+        image: ghcr.io/onedr0p/postgres-init:14.8
+        imagePullPolicy: IfNotPresent
+        envFrom: &envFrom
+          - secretRef:
+              name: radarr-secret
     controller:
       type: statefulset
+      annotations:
+        reloader.stakater.com/auto: "true"
     image:
-      repository: ghcr.io/onedr0p/radarr
-      tag: 4.5.2.7388@sha256:c63018900ec725a8ff5c652a11970b7661288bb6801e1ae25ff2d825a932dc36
+      repository: ghcr.io/onedr0p/radarr-develop
+      tag: 4.7.3.7731@sha256:89017fc5c2d56ba7e927196aec956907d6a704161a84255ae68bfec13a2bbea3
     env:
       TZ: Australia/Perth
       PUSHOVER_DEBUG: "false"
       RADARR__INSTANCE_NAME: Radarr
       RADARR__PORT: &port 80
+      RADARR__APPLICATION_URL: "https://{{ .Release.Name }}.brewcode.xyz"
       RADARR__LOG_LEVEL: info
+    envFrom: *envFrom
     service:
       main:
         ports:
