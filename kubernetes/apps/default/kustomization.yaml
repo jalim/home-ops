@@ -12,3 +12,4 @@ resources:
   - ./qbittorrent/ks.yaml
   - ./beer/ks.yaml
   - ./recyclarr/ks.yaml
+  - ./radarr-kids/ks.yaml
