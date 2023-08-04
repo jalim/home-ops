@@ -18,7 +18,8 @@
   "dependencyDashboard": true,
   "dependencyDashboardTitle": "Renovate Dashboard 🤖",
   "rebaseWhen": "conflicted",
-  "schedule": ["before 4pm"],
+  "timezone": "Australia/Perth",
+  "schedule": ["after 2am"],
   "flux": {
     "fileMatch": [
       "(^|/)kubernetes/.+\\.ya?ml(\\.j2)?$",
