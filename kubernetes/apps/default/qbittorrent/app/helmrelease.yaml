@@ -42,7 +42,7 @@ spec:
     env:
       TZ: Australia/Perth
       QBITTORRENT__PORT: &port 80
-      QBITTORRENT__BT_PORT: &bittorrentPort 50413
+      QBITTORRENT__BT_PORT: &bittorrentPort 50410
       QBT_Application__MemoryWorkingSetLimit: 4000
     service:
       main:
