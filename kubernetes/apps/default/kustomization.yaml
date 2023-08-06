@@ -14,4 +14,4 @@ resources:
   - ./recyclarr/ks.yaml
   - ./radarr-kids/ks.yaml
   - ./unpackerr/ks.yaml
-  # - ./tandoor/ks.yaml
+  - ./tandoor/ks.yaml
