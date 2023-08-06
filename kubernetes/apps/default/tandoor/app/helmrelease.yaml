@@ -84,12 +84,17 @@ spec:
       fsGroup: 1000
       fsGroupChangePolicy: OnRootMismatch
       supplementalGroups: [10000]
-    # volumeClaimTemplates:
-      # - name: config
-      #   mountPath: /config
-      #   accessMode: ReadWriteOnce
-      #   size: 10Gi
-      #   storageClass: nfs-storage
+    volumeClaimTemplates:
+      - name: media
+        mountPath: /media
+        accessMode: ReadWriteOnce
+        size: 1Gi
+        storageClass: nfs-storage
+      - name: static
+        mountPath: /static
+        accessMode: ReadWriteOnce
+        size: 1Gi
+        storageClass: nfs-storage
     # persistence:
       # media:
         # enabled: true
