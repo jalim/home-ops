@@ -86,12 +86,12 @@ spec:
       supplementalGroups: [10000]
     volumeClaimTemplates:
       - name: media
-        mountPath: /media
+        mountPath: /opt/recipes/mediafiles
         accessMode: ReadWriteOnce
         size: 1Gi
         storageClass: nfs-storage
       - name: static
-        mountPath: /static
+        mountPath: /opt/recipes/staticfiles
         accessMode: ReadWriteOnce
         size: 1Gi
         storageClass: nfs-storage
