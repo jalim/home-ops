@@ -12,7 +12,7 @@ resources:
   - ./sabnzbd/ks.yaml
   - ./qbittorrent/ks.yaml
   - ./beer/ks.yaml
-  # - ./recyclarr/ks.yaml
-  # - ./radarr-kids/ks.yaml
-  # - ./unpackerr/ks.yaml
+  - ./recyclarr/ks.yaml
+  - ./radarr-kids/ks.yaml
+  - ./unpackerr/ks.yaml
   # - ./tandoor/ks.yaml
