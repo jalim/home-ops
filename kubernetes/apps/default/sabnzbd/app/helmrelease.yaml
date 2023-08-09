@@ -42,7 +42,7 @@ spec:
         sabnzbd.default.svc,
         sabnzbd.default.svc.cluster,
         sabnzbd.default.svc.cluster.local,
-        sabnzbd.brewcode.xyz
+        sabnzbd.lumu.au
     envFrom:
       - secretRef:
           name: sabnzbd-secret
