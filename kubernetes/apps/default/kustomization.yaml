@@ -8,7 +8,7 @@ resources:
   - ./sonarr/ks.yaml
   - ./sonarr-kids/ks.yaml
   - ./radarr/ks.yaml
-  - ./prowlarr/ks.yaml
+  # - ./prowlarr/ks.yaml
   - ./sabnzbd/ks.yaml
   - ./qbittorrent/ks.yaml
   - ./beer/ks.yaml
