@@ -92,7 +92,7 @@ spec:
         mountPath: /config
         accessMode: ReadWriteOnce
         size: 10Gi
-        storageClass: nfs-storage
+        storageClass: longhorn
     persistence:
       media:
         enabled: true
