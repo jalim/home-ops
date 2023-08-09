@@ -74,7 +74,7 @@ spec:
         enabled: true
         ingressClassName: nginx
         hosts:
-          - host: &host "{{ .Release.Name }}.brewcode.xyz"
+          - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix

@@ -74,7 +74,7 @@ spec:
             proxy_hide_header "X-Frame-Options";
             proxy_set_header Accept-Encoding "";
         hosts:
-          - host: &host qb.brewcode.xyz
+          - host: &host "qb.${SECRET_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix
