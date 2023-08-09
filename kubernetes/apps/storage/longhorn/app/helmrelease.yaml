@@ -32,7 +32,7 @@ spec:
       enabled: true
       createPrometheusRules: true
     defaultSettings:
-      backupTarget: s3://longhorn-ctg778/
+      backupTarget: s3://longhorn-ctg778@auto/
       backupTargetCredentialSecret: longhorn
       defaultReplicaCount: 3
       backupstorePollInterval: 0

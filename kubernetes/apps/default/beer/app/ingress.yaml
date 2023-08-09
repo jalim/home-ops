@@ -4,7 +4,7 @@ metadata:
   name: beer
 spec:
   rules:
-  - host: beer.brewcode.xyz
+  - host: &host "beer.${SECRET_DOMAIN}"
     http:
       paths:
       - path: /
@@ -16,4 +16,4 @@ spec:
               number: 80
   tls:
   - hosts:
-    - beer.brewcode.xyz
+    - *host
