@@ -17,6 +17,8 @@ spec:
         selector:
           dnsZones:
             - "${SECRET_DOMAIN}"
+            - "lumu.au"
+            - "brewcode.xyz"
 ---
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
