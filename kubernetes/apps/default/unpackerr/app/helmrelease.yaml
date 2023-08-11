@@ -64,7 +64,7 @@ spec:
         enabled: true
         type: nfs
         server: 10.1.2.205
-        path: /mnt/dead/media/downloads/qbit
+        path: /mnt/dead/media/downloads/qbit_complete
         mountPath: /complete
     resources:
       requests:
