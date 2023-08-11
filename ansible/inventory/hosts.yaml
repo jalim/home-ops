@@ -12,17 +12,3 @@ kubernetes:
         master3:
           ansible_user: luke
           ansible_host: 10.1.2.13
-    worker:
-      hosts:
-        node1:
-          ansible_user: luke
-          ansible_host: 10.1.2.14
-        node2:
-          ansible_user: luke
-          ansible_host: 10.1.2.15
-        node3:
-          ansible_user: luke
-          ansible_host: 10.1.2.16
-        node4:
-          ansible_user: luke
-          ansible_host: 10.1.2.17
