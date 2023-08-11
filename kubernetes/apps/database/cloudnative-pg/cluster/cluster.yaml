@@ -7,7 +7,7 @@ metadata:
   annotations:
     kyverno.io/ignore: "true"
 spec:
-  instances: 3
+  instances: 1
   imageName: ghcr.io/cloudnative-pg/postgresql:14.8-7
   inheritedMetadata:
     labels:
