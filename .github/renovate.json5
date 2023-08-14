@@ -20,6 +20,7 @@
   "onboarding": false,
   "requireConfig": "optional",
   "dependencyDashboard": true,
+  "ignorePaths": ["**/archive/**"],
   "dependencyDashboardTitle": "Renovate Dashboard 🤖",
   "rebaseWhen": "conflicted",
   "timezone": "Australia/Perth",
