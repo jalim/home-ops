@@ -21,3 +21,4 @@ resources:
   - ./weave-gitops.yaml
   - ./cloudnative-pg.yaml
   - ./longhorn.yaml
+  - ./rook-ceph.yaml
