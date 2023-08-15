@@ -115,7 +115,7 @@ spec:
         mountPath: /opt/recipes/mediafiles
         accessMode: ReadWriteOnce
         size: 1Gi
-        storageClass: longhorn
+        storageClass: ceph-block
     persistence:
       nginx-config:
         enabled: "true"
