@@ -27,15 +27,7 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    # initContainers:
-    #   01-init-db:
-    #     image: ghcr.io/onedr0p/postgres-init:14.8
-    #     imagePullPolicy: IfNotPresent
-    #     envFrom: &envFrom
-    #       - secretRef:
-    #           name: tandoor-secret
     controller:
-      type: statefulset
       annotations:
         reloader.stakater.com/auto: "true"
     image:
@@ -101,9 +93,12 @@ spec:
               - path: /static
                 service:
                   port: *port2
+          - host: &host2 "recipes.${SECRET_DOMAIN}"
+            paths: *paths 
         tls:
           - hosts:
               - *host
+              - *host2
     podSecurityContext:
       runAsUser: 1000
       runAsGroup: 1000
@@ -143,6 +138,40 @@ spec:
         memory: 250Mi
       limits:
         memory: 2000Mi
+    initContainers:
+      01-init-db:
+        image: ghcr.io/auricom/postgres-init:15.4
+        imagePullPolicy: IfNotPresent
+        envFrom: *envFrom
+      02-init-migrate:
+        image: vabene1111/recipes:1.5.5
+        env:
+          - name: DB_ENGINE
+            value: django.db.backends.postgresql_psycopg2
+          - name: POSTGRES_HOST
+            value: ${POSTGRES_HOST}
+          - name: POSTGRES_PORT
+            value: ${POSTGRES_PORT}
+          - name: POSTGRES_DB
+            value: tandoor
+        envFrom:
+          - secretRef:
+              name: tandoor-secret
+        command:
+        - sh
+        - -c
+        - |
+          set -e
+          source /opt/recipes/venv/bin/activate
+          echo "Updating database"
+          python3 /opt/recipes/manage.py migrate
+          python3 /opt/recipes/manage.py collectstatic_js_reverse
+          python3 /opt/recipes/manage.py collectstatic --noinput
+        volumeMounts:
+          - name: django-js-reverse
+            mountPath: /opt/recipes/cookbook/static/django_js_reverse
+          - name: static
+            mountPath: /opt/recipes/staticfiles
     sidecars:
       nginx:
         image: nginxinc/nginx-unprivileged:1.25.1-alpine
