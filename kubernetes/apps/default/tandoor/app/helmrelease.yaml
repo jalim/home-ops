@@ -32,16 +32,16 @@ spec:
         reloader.stakater.com/auto: "true"
     image:
       repository: vabene1111/recipes
-      tag: 1.5.5@sha256:825cbff35051cbe85e571d3f2303d4469233423c1e94e1ba10af75fa94092dce
+      tag: 1.5.5
     envFrom: &envFrom
       - secretRef:
           name: tandoor-secret
     env:
       DEBUG: "0"
-      TIMEZONE: Australia/Perth
       ALLOWED_HOSTS: "*"
       DB_ENGINE: django.db.backends.postgresql_psycopg2
       GUNICORN_MEDIA: "0"
+      TIMEZONE: ${TIMEZONE}
       TANDOOR_PORT: 8888
       FRACTION_PREF_DEFAULT: "0"
       COMMENT_PREF_DEFAULT: "1"
@@ -64,25 +64,12 @@ spec:
             port: &port 8888
           nginx:
             port: &port2 8080
-    # probes:
-    #   liveness: &probes
-    #     enabled: true
-    #     custom: true
-    #     spec:
-    #       httpGet:
-    #         path: /ping
-    #         port: *port
-    #       initialDelaySeconds: 0
-    #       periodSeconds: 10
-    #       timeoutSeconds: 1
-    #       failureThreshold: 3
-    #   readiness: *probes
-    #   startup:
-    #     enabled: false
     ingress:
       main:
         enabled: true
-        ingressClassName: nginx
+        ingressClassName: "nginx"
+        annotations:
+          hajimari.io/icon: mdi:chef-hat
         hosts:
           - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
             paths: &paths
@@ -94,24 +81,16 @@ spec:
                 service:
                   port: *port2
           - host: &host2 "recipes.${SECRET_DOMAIN}"
-            paths: *paths 
+            paths: *paths
         tls:
           - hosts:
               - *host
               - *host2
-    podSecurityContext:
-      runAsUser: 1000
-      runAsGroup: 1000
-      fsGroup: 1000
-      fsGroupChangePolicy: OnRootMismatch
-      supplementalGroups: [10000]
-    volumeClaimTemplates:
-      - name: media
-        mountPath: /opt/recipes/mediafiles
-        accessMode: ReadWriteOnce
-        size: 1Gi
-        storageClass: ceph-block
     persistence:
+      files:
+        enabled: true
+        existingClaim: tandoor-files
+        mountPath: /opt/recipes/mediafiles
       nginx-config:
         enabled: "true"
         mountPath: /etc/nginx/nginx.conf
@@ -132,12 +111,17 @@ spec:
         enabled: true
         mountPath: /mnt/cache
         type: emptyDir
+    podSecurityContext:
+      runAsUser: 568
+      runAsGroup: 568
+      fsGroup: 568
+      fsGroupChangePolicy: "OnRootMismatch"
     resources:
       requests:
-        cpu: 10m
-        memory: 250Mi
+        cpu: 100m
+        memory: 256Mi
       limits:
-        memory: 2000Mi
+        memory: 512Mi
     initContainers:
       01-init-db:
         image: ghcr.io/auricom/postgres-init:15.4
@@ -184,7 +168,7 @@ spec:
             readOnly: true
             mountPath: /etc/nginx/nginx.conf
             subPath: nginx-config
-          - name: media
+          - name: files
             mountPath: /media
           - name: static
             mountPath: /static
