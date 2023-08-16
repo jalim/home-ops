@@ -127,35 +127,35 @@ spec:
         image: ghcr.io/auricom/postgres-init:15.4
         imagePullPolicy: IfNotPresent
         envFrom: *envFrom
-      02-init-migrate:
-        image: vabene1111/recipes:1.5.5
-        env:
-          - name: DB_ENGINE
-            value: django.db.backends.postgresql_psycopg2
-          - name: POSTGRES_HOST
-            value: ${POSTGRES_HOST}
-          - name: POSTGRES_PORT
-            value: ${POSTGRES_PORT}
-          - name: POSTGRES_DB
-            value: tandoor
-        envFrom:
-          - secretRef:
-              name: tandoor-secret
-        command:
-        - sh
-        - -c
-        - |
-          set -e
-          source /opt/recipes/venv/bin/activate
-          echo "Updating database"
-          python3 /opt/recipes/manage.py migrate
-          python3 /opt/recipes/manage.py collectstatic_js_reverse
-          python3 /opt/recipes/manage.py collectstatic --noinput
-        volumeMounts:
-          - name: django-js-reverse
-            mountPath: /opt/recipes/cookbook/static/django_js_reverse
-          - name: static
-            mountPath: /opt/recipes/staticfiles
+      # 02-init-migrate:
+      #   image: vabene1111/recipes:1.5.5
+      #   env:
+      #     - name: DB_ENGINE
+      #       value: django.db.backends.postgresql_psycopg2
+      #     - name: POSTGRES_HOST
+      #       value: ${POSTGRES_HOST}
+      #     - name: POSTGRES_PORT
+      #       value: ${POSTGRES_PORT}
+      #     - name: POSTGRES_DB
+      #       value: tandoor
+      #   envFrom:
+      #     - secretRef:
+      #         name: tandoor-secret
+      #   command:
+      #   - sh
+      #   - -c
+      #   - |
+      #     set -e
+      #     source /opt/recipes/venv/bin/activate
+      #     echo "Updating database"
+      #     python3 /opt/recipes/manage.py migrate
+      #     python3 /opt/recipes/manage.py collectstatic_js_reverse
+      #     python3 /opt/recipes/manage.py collectstatic --noinput
+      #   volumeMounts:
+      #     - name: django-js-reverse
+      #       mountPath: /opt/recipes/cookbook/static/django_js_reverse
+      #     - name: static
+      #       mountPath: /opt/recipes/staticfiles
     sidecars:
       nginx:
         image: nginxinc/nginx-unprivileged:1.25.1-alpine
