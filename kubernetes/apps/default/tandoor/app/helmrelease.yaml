@@ -1,12 +1,12 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/helm.toolkit.fluxcd.io/helmrelease_v2beta1.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/helm.toolkit.fluxcd.io/helmrelease_v2beta1.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: &app tandoor
-  namespace: default
+  name: tandoor
+  namespace: fileserver
 spec:
-  interval: 30m
+  interval: 15m
   chart:
     spec:
       chart: app-template
@@ -15,7 +15,7 @@ spec:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
-  maxHistory: 2
+  maxHistory: 3
   install:
     createNamespace: true
     remediation:
@@ -28,69 +28,89 @@ spec:
     keepHistory: false
   values:
     controller:
+      strategy: RollingUpdate
       annotations:
-        reloader.stakater.com/auto: "true"
+        secret.reloader.stakater.com/reload: &secret tandoor-secret
+        configMap.reloader.stakater.com/reload: &configmap tandoor-configmap
+    initContainers:
+      init-db:
+        image: ghcr.io/onedr0p/postgres-init:14.9
+        envFrom:
+          - secretRef:
+              name: *secret
     image:
-      repository: vabene1111/recipes
-      tag: 1.5.5
-    envFrom: &envFrom
+      repository: ghcr.io/tandoorrecipes/recipes
+      tag: "1.5.5"
+    envFrom:
       - secretRef:
-          name: tandoor-secret
-    env:
-      DEBUG: "0"
-      ALLOWED_HOSTS: "*"
-      DB_ENGINE: django.db.backends.postgresql_psycopg2
-      GUNICORN_MEDIA: "0"
-      TIMEZONE: ${TIMEZONE}
-      TANDOOR_PORT: 8888
-      FRACTION_PREF_DEFAULT: "0"
-      COMMENT_PREF_DEFAULT: "1"
-      SHOPPING_MIN_AUTOSYNC_INTERVAL: "5"
-    command:
-      - /opt/recipes/venv/bin/gunicorn
-      - -b
-      - :8888
-      - --access-logfile
-      - "-"
-      - --error-logfile
-      - "-"
-      - --log-level
-      - INFO
-      - recipes.wsgi
+          name: *secret
+      - configMapRef:
+          name: *configmap
+    podSecurityContext:
+      runAsUser: 0
+    securityContext:
+      runAsUser: 65534
     service:
       main:
         ports:
           http:
-            port: &port 8888
-          nginx:
-            port: &port2 8080
+            primary: true
+            port: 80
+          gunicorn:
+            port: 8080
+    probes:
+      liveness: &probes
+        enabled: true
+        custom: true
+        spec:
+          httpGet:
+            path: /accounts/login/
+            port: gunicorn
+          initialDelaySeconds: 0
+          periodSeconds: 10
+          timeoutSeconds: 1
+          failureThreshold: 3
+      readiness: *probes
+      startup:
+        enabled: true
+        custom: true
+        spec:
+          httpGet:
+            path: /accounts/login/
+            port: gunicorn
+          failureThreshold: 30
+          periodSeconds: 10
     ingress:
       main:
         enabled: true
-        ingressClassName: "nginx"
+        ingressClassName: public
         annotations:
+          hajimari.io/enable: "true"
+          hajimari.io/appName: Recipes
+          hajimari.io/group: groupware
           hajimari.io/icon: mdi:chef-hat
         hosts:
-          - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
-            paths: &paths
+          - host: &host "recipes.${SECRET_DOMAIN}"
+            paths:
               - path: /
-              - path: /media
+                pathType: Prefix
+              - path: /accounts/signup
                 service:
-                  port: *port2
-              - path: /static
-                service:
-                  port: *port2
-          - host: &host2 "recipes.${SECRET_DOMAIN}"
-            paths: *paths
+                  name: blackhole
+                pathType: Prefix
         tls:
-          - hosts:
+          - secretName: *host
+            hosts:
               - *host
-              - *host2
     persistence:
       files:
         enabled: true
         existingClaim: tandoor-files
-        mountPath: /opt/recipes/mediafiles
+        subPath:
+          - path: mediafiles
+            mountPath: /opt/recipes/mediafiles
+          - path: staticfiles
+            mountPath: /opt/recipes/staticfiles
       nginx-config:
         enabled: "true"
         mountPath: /etc/nginx/nginx.conf
@@ -98,71 +118,22 @@ spec:
         type: "custom"
         volumeSpec:
           configMap:
-            name: tandoor-configmap
-      django-js-reverse:
-        enabled: true
-        type: emptyDir
-        mountPath: /opt/recipes/cookbook/static/django_js_reverse
-      static:
-        enabled: true
-        mountPath: /opt/recipes/staticfiles
-        type: emptyDir
-      cache:
-        enabled: true
-        mountPath: /mnt/cache
-        type: emptyDir
-    podSecurityContext:
-      runAsUser: 568
-      runAsGroup: 568
-      fsGroup: 568
-      fsGroupChangePolicy: "OnRootMismatch"
+            name: tandoor-nginx
     resources:
       requests:
         cpu: 100m
         memory: 256Mi
       limits:
         memory: 512Mi
-    initContainers:
-      01-init-db:
-        image: ghcr.io/auricom/postgres-init:15.4
-        imagePullPolicy: IfNotPresent
-        envFrom: *envFrom
-      # 02-init-migrate:
-      #   image: vabene1111/recipes:1.5.5
-      #   env:
-      #     - name: DB_ENGINE
-      #       value: django.db.backends.postgresql_psycopg2
-      #     - name: POSTGRES_HOST
-      #       value: ${POSTGRES_HOST}
-      #     - name: POSTGRES_PORT
-      #       value: ${POSTGRES_PORT}
-      #     - name: POSTGRES_DB
-      #       value: tandoor
-      #   envFrom:
-      #     - secretRef:
-      #         name: tandoor-secret
-      #   command:
-      #   - sh
-      #   - -c
-      #   - |
-      #     set -e
-      #     source /opt/recipes/venv/bin/activate
-      #     echo "Updating database"
-      #     python3 /opt/recipes/manage.py migrate
-      #     python3 /opt/recipes/manage.py collectstatic_js_reverse
-      #     python3 /opt/recipes/manage.py collectstatic --noinput
-      #   volumeMounts:
-      #     - name: django-js-reverse
-      #       mountPath: /opt/recipes/cookbook/static/django_js_reverse
-      #     - name: static
-      #       mountPath: /opt/recipes/staticfiles
-    sidecars:
+    additionalContainers:
       nginx:
-        image: nginxinc/nginx-unprivileged:1.25.1-alpine
+        name: nginx
+        image: public.ecr.aws/nginx/nginx:1.25.1
         imagePullPolicy: IfNotPresent
         ports:
-          - name: nginx
-            containerPort: *port2
+          - name: http
+            containerPort: 80
+            protocol: TCP
         volumeMounts:
           - name: nginx-config
             readOnly: true
@@ -170,7 +141,7 @@ spec:
             subPath: nginx-config
           - name: files
             mountPath: /media
-          - name: static
+            subPath: mediafiles
+          - name: files
             mountPath: /static
-          - name: cache
-            mountPath: /var/cache/nginx
+            subPath: staticfiles

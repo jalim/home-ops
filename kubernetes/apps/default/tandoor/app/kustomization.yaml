@@ -2,15 +2,9 @@
 # yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: default
 resources:
-  - ./helmrelease.yaml
-  # - ./gatus.yaml
+  - ./configmap.yaml
   - ./externalsecret.yaml
-  - ./volume.yaml
-configMapGenerator:
-  - name: tandoor-configmap
-    files:
-      - ./config/nginx-config
-generatorOptions:
-  disableNameSuffixHash: true
+  - ./helmrelease.yaml
+  - ./pvc.yaml
+  # - ./replicationsource.yaml
