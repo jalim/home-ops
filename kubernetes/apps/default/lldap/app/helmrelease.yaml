@@ -60,7 +60,7 @@ spec:
     ingress:
       main:
         enabled: true
-        ingressClassName: internal
+        ingressClassName: nginx
         hosts:
           - host: &host "{{ .Release.Name }}.lumu.au"
             paths:
