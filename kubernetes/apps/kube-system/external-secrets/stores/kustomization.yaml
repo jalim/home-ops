@@ -6,3 +6,5 @@ namespace: kube-system
 resources:
   - ./secret.sops.yaml
   - ./clustersecretstore.yaml
+  - ./1passsecretstore.yaml
+  - ./1passsecret.sops.yaml
