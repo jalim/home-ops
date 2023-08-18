@@ -13,5 +13,3 @@ spec:
   dnsNames:
     - "${SECRET_DOMAIN}"
     - "*.${SECRET_DOMAIN}"
-    - "mullan.net.au"
-    - "*.mullan.net.au"
