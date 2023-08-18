@@ -12,4 +12,12 @@ ingress:
     service: https://ingress-nginx-controller.networking.svc.cluster.local:443
     originRequest:
       originServerName: "ingress.${SECRET_DOMAIN}"
+  - hostname: "mullan.net.au"
+    service: https://ingress-nginx-controller.networking.svc.cluster.local:443
+    originRequest:
+      originServerName: "ingress.${SECRET_DOMAIN}"
+  - hostname: "*.mullan.net.au"
+    service: https://ingress-nginx-controller.networking.svc.cluster.local:443
+    originRequest:
+      originServerName: "ingress.${SECRET_DOMAIN}"
   - service: http_status:404

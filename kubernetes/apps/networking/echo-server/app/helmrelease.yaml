@@ -71,9 +71,14 @@ spec:
             paths:
               - path: /
                 pathType: Prefix
+          - host: &host1 "{{ .Release.Name }}.mullan.net.au"
+            paths:
+              - path: /
+                pathType: Prefix
         tls:
           - hosts:
               - *host
+              - *host1
     resources:
       requests:
         cpu: 5m
