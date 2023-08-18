@@ -2,16 +2,14 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: "${SECRET_DOMAIN/./-}-production"
+  name: "mullan.net.au-production"
   namespace: networking
 spec:
-  secretName: "${SECRET_DOMAIN/./-}-production-tls"
+  secretName: "mullan.net.au-production-tls"
   issuerRef:
     name: letsencrypt-production
     kind: ClusterIssuer
-  commonName: "${SECRET_DOMAIN}"
+  commonName: "mullan.net.au"
   dnsNames:
-    - "${SECRET_DOMAIN}"
-    - "*.${SECRET_DOMAIN}"
     - "mullan.net.au"
     - "*.mullan.net.au"
