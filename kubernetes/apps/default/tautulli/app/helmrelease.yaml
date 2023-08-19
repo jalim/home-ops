@@ -77,8 +77,8 @@ spec:
         imagePullPolicy: IfNotPresent
         args:
           - --repo=https://github.com/blacktwin/JBOPS
-          - --branch=master
-          - --wait=86400 # 1 day
+          - --ref=master
+          - --period=24h
           - --root=/add-ons
         volumeMounts:
           - { name: add-ons, mountPath: /add-ons }
