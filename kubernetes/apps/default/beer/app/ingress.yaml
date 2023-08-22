@@ -3,6 +3,7 @@ kind: Ingress
 metadata:
   name: beer
 spec:
+  ingressClassName: internal
   rules:
   - host: &host "beer.${SECRET_DOMAIN}"
     http:
