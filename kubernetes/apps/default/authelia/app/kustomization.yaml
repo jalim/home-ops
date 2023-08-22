@@ -5,6 +5,7 @@ kind: Kustomization
 namespace: default
 resources:
   - ./externalsecret.yaml
+  - ./externalsecret-2.yaml
   - ./helmrelease.yaml
   - ./gatus.yaml
 configMapGenerator:
