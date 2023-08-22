@@ -20,3 +20,4 @@ resources:
   - ./tautulli/ks.yaml
   - ./overseerr/ks.yaml
   - ./readarr/ks.yaml
+  - ./test-sec/ks.yaml
