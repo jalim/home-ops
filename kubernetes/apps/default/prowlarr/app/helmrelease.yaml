@@ -70,7 +70,7 @@ spec:
     ingress:
       main:
         enabled: true
-        ingressClassName: nginx
+        ingressClassName: internal
         annotations:
         hosts:
           - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
