@@ -72,7 +72,7 @@ spec:
       AUTHELIA_NOTIFIER_SMTP_PORT: 25
       AUTHELIA_NOTIFIER_SMTP_SENDER: Authelia <authelia@mullan.net.au>
       AUTHELIA_SERVER_DISABLE_HEALTHCHECK: "true"
-      AUTHELIA_SERVER_ADDRESS: http://0.0.0.0:80
+      AUTHELIA_SERVER_PORT: &port 80
       AUTHELIA_SESSION_DOMAIN: lumu.au
       AUTHELIA_SESSION_NAME: authelia-home-ops
       AUTHELIA_SESSION_REDIS_DATABASE_INDEX: 14
@@ -88,7 +88,7 @@ spec:
       main:
         ports:
           http:
-            port: 80
+            port: *port
           metrics:
             enabled: true
             port: 8080
