@@ -82,8 +82,8 @@ spec:
           - hosts:
               - *host
     podSecurityContext:
-      runAsUser: 1000
-      runAsGroup: 1000
+      runAsUser: 999
+      runAsGroup: 999
     persistence:
       shared:
         enabled: true
