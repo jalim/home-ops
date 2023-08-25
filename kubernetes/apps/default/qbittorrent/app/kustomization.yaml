@@ -8,7 +8,7 @@ resources:
   - ./helmrelease.yaml
   # - ./volsync.yaml
   - ./gatus.yaml
-  - ./qbittools-tagging
+  # - ./qbittools-tagging
 # configMapGenerator:
   # - name: qbittorrent-scripts
     # files:
