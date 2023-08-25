@@ -35,17 +35,17 @@ spec:
         schedule: "@hourly"
     image:
       repository: ghcr.io/buroa/qbittools
-      tag: v0.6.2
-    args:
-      - tagging
-      - --unregistered
-      - --added-on
-      - --last-activity
-      - --sites
-      - -s
-      - qbittorrent.default.svc.cluster.local
-      - -p
-      - "80"
+      tag: v0.8.1
+    args: [
+      "tagging",
+      "--added-on",
+      "--expired",
+      "--last-activity",
+      "--sites",
+      "--unregistered",
+      "-s", "qbittorrent.default.svc.cluster.local",
+      "-p", "80"
+    ]
     service:
       main:
         enabled: false
