@@ -52,7 +52,6 @@ spec:
         ingressClassName: external
         annotations:
           external-dns.alpha.kubernetes.io/target: external.lumu.au
-          nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
         hosts:
           - host: &host "invidious.${SECRET_DOMAIN}"
             paths:
