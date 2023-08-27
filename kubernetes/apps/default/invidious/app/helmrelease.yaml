@@ -49,9 +49,10 @@ spec:
     ingress:
       main:
         enabled: true
-        ingressClassName: internal
+        ingressClassName: external
         annotations:
-          hajimari.io/icon: mdi:youtube
+          external-dns.alpha.kubernetes.io/target: external.lumu.au
+          nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
         hosts:
           - host: &host "invidious.${SECRET_DOMAIN}"
             paths:
