@@ -5,6 +5,7 @@ resources:
   - ./namespace.yaml
 
 # Apps:
+  - ./home-assistant/ks.yaml
   - ./invidious/ks.yaml
   - ./jellyfin/ks.yaml
   - ./sonarr/ks.yaml
