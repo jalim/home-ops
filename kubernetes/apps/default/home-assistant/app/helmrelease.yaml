@@ -62,7 +62,7 @@ spec:
           shelly:
             enabled: true
             port: 5683
-            protocol: TCP
+            protocol: UDP
             targetPort: 5683
           upnp:
             enabled: true
@@ -75,6 +75,11 @@ spec:
             protocol: UDP
             targetPort: 5353
           homekit:
+            enabled: true
+            port: 51827
+            protocol: TCP
+            targetPort: 51827
+          homekit1:
             enabled: true
             port: 51827
             protocol: TCP
