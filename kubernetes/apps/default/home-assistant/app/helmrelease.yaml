@@ -81,9 +81,9 @@ spec:
             targetPort: 51827
           homekit1:
             enabled: true
-            port: 51827
+            port: 21063
             protocol: TCP
-            targetPort: 51827
+            targetPort: 21063
         externalTrafficPolicy: Local
     ingress:
       main:
