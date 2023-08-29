@@ -53,6 +53,18 @@ spec:
         ports:
           http:
             port: 8123
+      hass:
+        enabled: true
+        type: LoadBalancer
+        annotations:
+          io.cilium/lb-ipam-ips: 10.1.2.22
+        ports:
+          shelly:
+            enabled: true
+            port: 5683
+            protocol: TCP
+            targetPort: 5683
+        externalTrafficPolicy: Local
     ingress:
       main:
         enabled: true
