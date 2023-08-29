@@ -64,6 +64,16 @@ spec:
             port: 5683
             protocol: TCP
             targetPort: 5683
+          upnp:
+            enabled: true
+            port: 1900
+            protocl: UDP
+            targetPort: 1900
+          mdns:
+            enabled: true
+            port: 5353
+            protocol: UDP
+            targetPort: 5353
         externalTrafficPolicy: Local
     ingress:
       main:
