@@ -74,6 +74,11 @@ spec:
             port: 5353
             protocol: UDP
             targetPort: 5353
+          homekit:
+            enabled: true
+            port: 51827
+            protocol: TCP
+            targetPort: 51827
         externalTrafficPolicy: Local
     ingress:
       main:
