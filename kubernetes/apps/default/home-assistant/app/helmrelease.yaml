@@ -74,12 +74,12 @@ spec:
             port: 5353
             protocol: UDP
             targetPort: 5353
-          homekit:
+          homekit1:
             enabled: true
             port: 51827
             protocol: TCP
             targetPort: 51827
-          homekit1:
+          homekit2:
             enabled: true
             port: 21063
             protocol: TCP
