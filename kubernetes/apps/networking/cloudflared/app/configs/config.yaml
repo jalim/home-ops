@@ -12,11 +12,11 @@ ingress:
     service: https://nginx-external-controller.networking.svc.cluster.local:443
     originRequest:
       originServerName: "external.${SECRET_DOMAIN}"
-  - hostname: "mullan.net.au"
+  - hostname: "${SECONDARY_DOMAIN}"
     service: https://nginx-external-controller.networking.svc.cluster.local:443
     originRequest:
       originServerName: "external.${SECRET_DOMAIN}"
-  - hostname: "*.mullan.net.au"
+  - hostname: "*.${SECONDARY_DOMAIN}"
     service: https://nginx-external-controller.networking.svc.cluster.local:443
     originRequest:
       originServerName: "external.${SECRET_DOMAIN}"
