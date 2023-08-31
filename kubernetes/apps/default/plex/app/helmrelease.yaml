@@ -48,7 +48,7 @@ spec:
         enabled: true
         ingressClassName: external
         annotations:
-          external-dns.alpha.kubernetes.io/target: external.lumu.au
+          external-dns.alpha.kubernetes.io/target: home.lumu.au
           nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
         hosts:
           - host: &host "{{ .Release.Name }}.lumu.au"
