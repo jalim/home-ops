@@ -61,33 +61,6 @@ spec:
         loadBalancerIP: 10.1.2.22
         annotations:
           io.cilium/lb-ipam-ips: 10.1.2.22
-        # ports:
-        #   shelly:
-        #     enabled: true
-        #     port: 5683
-        #     protocol: UDP
-        #     targetPort: 5683
-        #   upnp:
-        #     enabled: true
-        #     port: 1900
-        #     protocl: UDP
-        #     targetPort: 1900
-        #   mdns:
-        #     enabled: true
-        #     port: 5353
-        #     protocol: UDP
-        #     targetPort: 5353
-        #   homekit1:
-        #     enabled: true
-        #     port: 51827
-        #     protocol: TCP
-        #     targetPort: 51827
-        #   homekit2:
-        #     enabled: true
-        #     port: 21063
-        #     protocol: TCP
-        #     targetPort: 21063
-        # externalTrafficPolicy: Local
     ingress:
       main:
         enabled: true
