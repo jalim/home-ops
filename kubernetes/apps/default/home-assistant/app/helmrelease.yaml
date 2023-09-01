@@ -61,6 +61,9 @@ spec:
         loadBalancerIP: 10.1.2.22
         annotations:
           io.cilium/lb-ipam-ips: 10.1.2.22
+        ports:
+          http:
+            port: 8123
     ingress:
       main:
         enabled: true
