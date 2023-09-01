@@ -62,7 +62,7 @@ spec:
         annotations:
           io.cilium/lb-ipam-ips: 10.1.2.22
         ports:
-          http:
+          http2:
             port: 8123
     ingress:
       main:
