@@ -52,17 +52,13 @@ spec:
     dnsPolicy: ClusterFirstWithHostNet
     service:
       main:
-        ports:
-          http:
-            port: 8123
-      hassio:
         enabled: true
         type: LoadBalancer
         loadBalancerIP: 10.1.2.22
         annotations:
           io.cilium/lb-ipam-ips: 10.1.2.22
         ports:
-          http2:
+          http:
             port: 8123
     ingress:
       main:
