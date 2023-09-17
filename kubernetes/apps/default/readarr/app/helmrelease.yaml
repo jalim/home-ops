@@ -31,7 +31,7 @@ spec:
       type: statefulset
     image:
       repository: ghcr.io/onedr0p/readarr-develop
-      tag: 0.3.4.2207@sha256:aabc122bf2c37d85994d10ad225f1397728218fd307ca6aa580e4f5db511cd3d
+      tag: 0.3.5.2217@sha256:8aa9342cc817dc52fa8523de467b575535b515597fb16cb0cfe031f4dd6bfd2d
     env:
       TZ: Australia/Perth
       READARR__PORT: &port 80
