@@ -44,7 +44,7 @@ spec:
     env:
       TZ: Australia/Perth
       PUSHOVER_DEBUG: "false"
-      RADARR__INSTANCE_NAME: Radarr
+      RADARR__INSTANCE_NAME: Radarr-4K
       RADARR__PORT: &port 80
       RADARR__APPLICATION_URL: "{{ .Release.Name }}.${SECRET_DOMAIN}"
       RADARR__LOG_LEVEL: info
