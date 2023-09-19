@@ -31,7 +31,7 @@ spec:
       type: statefulset
     image:
       repository: ghcr.io/onedr0p/sonarr-develop
-      tag: 4.0.0.674@sha256:afc698edaf065046f044efcec4df4080a8235e6552e52ffcca3612def6989d68
+      tag: 4.0.0.682@sha256:fc2c303f997521c0f8b335cf723c74b2a95277dde76f52e8c8b6f2b1a8f7f880
     env:
       TZ: Australia/Perth
       PUSHOVER_DEBUG: "false"
