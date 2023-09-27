@@ -7,5 +7,5 @@ resources:
   - ./externalsecret.yaml
   - ./helmrelease.yaml
   - ./gatus.yaml
-# patchesStrategicMerge:
-#   - ./patches/addons.yaml
+patchesStrategicMerge:
+  - ./patches/addons.yaml

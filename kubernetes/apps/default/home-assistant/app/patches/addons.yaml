@@ -14,7 +14,7 @@ spec:
           repository: ghcr.io/coder/code-server
           tag: 4.17.0
         env:
-          TZ: America/New_York
+          TZ: Australia/Perth
         workingDir: /config
         args:
           - --auth
@@ -27,7 +27,7 @@ spec:
           enabled: true
           ingressClassName: internal
           hosts:
-            - host: &host hass-code.devbu.io
+            - host: &host hass-code.lumu.au
               paths:
                 - path: /
                   pathType: Prefix
