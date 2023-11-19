@@ -17,3 +17,5 @@ spec:
   selector:
     postgresql: postgres
     role: primary
+
+#
