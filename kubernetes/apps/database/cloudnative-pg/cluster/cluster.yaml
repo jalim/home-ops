@@ -3,12 +3,9 @@ apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
   name: postgres
-  namespace: database
-  annotations:
-    kyverno.io/ignore: "true"
 spec:
   instances: 3
-  imageName: ghcr.io/cloudnative-pg/postgresql:14.9-12
+  imageName: ghcr.io/cloudnative-pg/postgresql:16.0-10
   enableSuperuserAccess: true
   inheritedMetadata:
     labels:
