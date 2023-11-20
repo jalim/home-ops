@@ -16,8 +16,13 @@ spec:
   enableSuperuserAccess: true
   # Note: Bootstrap is needed when recovering from an existing cnpg cluster
   bootstrap:
-    recovery:
-      source: &previousCluster postgres-v4
+    initdb:
+      import:
+        type: monolith
+        databases: ["*"]
+        roles: ["*"]
+        source:
+          externalCluster: cnpg-1
   postgresql:
     parameters:
       max_connections: "600"
@@ -46,3 +51,14 @@ spec:
         secretAccessKey:
           name: cloudnative-pg-secret
           key: aws-secret-access-key
+  externalClusters:
+    - name: cnpg-1
+      connectionParameters:
+        # Use the correct IP or host name for the source database
+        host: postgres-rw.database.svc.cluster.local
+        user: postgres
+        dbname: postgres
+        sslmode: require
+      password:
+        name: cloudnative-pg-secret
+        key: password
