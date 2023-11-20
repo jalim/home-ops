@@ -9,7 +9,7 @@ resources:
   - ./invidious/ks.yaml
   - ./jellyfin/ks.yaml
   - ./sonarr/ks.yaml
-  - ./sonarr-kids/ks.yaml
+  # - ./sonarr-kids/ks.yaml
   - ./radarr/ks.yaml
   - ./radarr-4k/ks.yaml
   - ./plex/ks.yaml
