@@ -17,7 +17,6 @@ spec:
         namespace: flux-system
   maxHistory: 2
   install:
-    createNamespace: true
     remediation:
       retries: 3
   upgrade:
@@ -27,74 +26,96 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    controller:
-      type: statefulset
-    image:
-      repository: ghcr.io/onedr0p/sonarr-develop
-      tag: 4.0.0.725@sha256:d6ffa58423d4c13133bfde5e9ce7dede2c9c1ef64adc928a1fb80403be91bc0c
-    env:
-      TZ: Australia/Perth
-      PUSHOVER_DEBUG: "false"
-      SONARR__INSTANCE_NAME: Sonarr-kids
-      SONARR__PORT: &port 80
-      SONARR__LOG_LEVEL: info
-    envFrom:
-      - secretRef:
-          name: sonarr-kids-secret
+    controllers:
+      main:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        initContainers:
+          init-db:
+            image:
+              repository: ghcr.io/onedr0p/postgres-init
+              tag: 14
+              pullPolicy: IfNotPresent
+            envFrom: &envFrom
+              - secretRef:
+                  name: sonarr-kids-secret
+        containers:
+          main:
+            image:
+              repository: ghcr.io/onedr0p/sonarr-develop
+              tag: 4.0.0.725@sha256:d6ffa58423d4c13133bfde5e9ce7dede2c9c1ef64adc928a1fb80403be91bc0c
+            env:
+              TZ: Australia/Perth
+              PUSHOVER_DEBUG: "false"
+              SONARR__AUTHENTICATION_METHOD: External
+              SONARR__AUTHENTICATION_REQUIRED: DisabledForLocalAddresses
+              SONARR__INSTANCE_NAME: Sonarr-kids
+              SONARR__PORT: &port 80
+              SONARR__LOG_LEVEL: info
+              SONARR__THEME: dark
+            envFrom: *envFrom
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /ping
+                    port: *port
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+              startup:
+                enabled: false
+            resources:
+              requests:
+                cpu: 10m
+                memory: 256M
+              limits:
+                memory: 1Gi
+        pod:
+          securityContext:
+            runAsUser: 1000
+            runAsGroup: 1000
+            fsGroup: 1000
+            fsGroupChangePolicy: OnRootMismatch
+            supplementalGroups: [10000]
     service:
       main:
         ports:
           http:
             port: *port
-    probes:
-      liveness: &probes
-        enabled: true
-        custom: true
-        spec:
-          httpGet:
-            path: /ping
-            port: *port
-          initialDelaySeconds: 0
-          periodSeconds: 10
-          timeoutSeconds: 5
-          failureThreshold: 5
-      readiness: *probes
-      startup:
-        enabled: false
     ingress:
       main:
         enabled: true
-        ingressClassName: internal
+        className: internal
         hosts:
           - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
             paths:
               - path: /
-                pathType: Prefix
+                service:
+                  name: main
+                  port: http
         tls:
           - hosts:
               - *host
-    podSecurityContext:
-      runAsUser: 1000
-      runAsGroup: 1000
-      fsGroup: 1000
-      fsGroupChangePolicy: OnRootMismatch
-      supplementalGroups: [10000]
-    volumeClaimTemplates:
-      - name: config
-        mountPath: /config
-        accessMode: ReadWriteOnce
-        size: 10Gi
-        storageClass: longhorn
     persistence:
+      config:
+        enabled: true
+        existingClaim: sonarr-kids-config
+      # pushover-notify:
+      #   type: configMap
+      #   name: sonarr-configmap
+      #   defaultMode: 0775
+      #   globalMounts:
+      #     - path: /scripts/pushover-notify.sh
+      #       subPath: pushover-notify.sh
+      #       readOnly: true
       media:
         enabled: true
         type: nfs
         server: 10.1.2.205
         path: /mnt/dead/media
         mountPath: /media
-    resources:
-      requests:
-        cpu: 10m
-        memory: 250Mi
-      limits:
-        memory: 2000Mi

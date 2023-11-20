@@ -1,0 +1,12 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: sonarr-kids-config
+  namespace: default
+spec:
+  accessModes: ["ReadWriteMany"]
+  resources:
+    requests:
+      storage: 15Gi
+  storageClassName: longhorn
