@@ -27,7 +27,7 @@ spec:
     keepHistory: false
 
 
-values:
+  values:
     controllers:
       main:
         annotations:
