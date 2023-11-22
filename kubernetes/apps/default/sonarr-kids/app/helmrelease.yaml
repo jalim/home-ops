@@ -105,17 +105,5 @@ spec:
       config:
         enabled: true
         existingClaim: sonarr-kids-config
-      # pushover-notify:
-      #   type: configMap
-      #   name: sonarr-configmap
-      #   defaultMode: 0775
-      #   globalMounts:
-      #     - path: /scripts/pushover-notify.sh
-      #       subPath: pushover-notify.sh
-      #       readOnly: true
       media:
-        enabled: true
-        type: nfs
-        server: 10.1.2.205
-        path: /mnt/dead/media
-        mountPath: /media
+        existingClaim: media
