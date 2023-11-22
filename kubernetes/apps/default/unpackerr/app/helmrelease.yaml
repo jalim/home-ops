@@ -25,28 +25,45 @@ spec:
       retries: 3
   uninstall:
     keepHistory: false
-  values:
-    controller:
-      type: statefulset
-      annotations:
-        reloader.stakater.com/auto: "true"
-    image:
-      repository: docker.io/golift/unpackerr
-      tag: 0.12.0
-    env:
-      TZ: Australia/Perth
-      UN_WEBSERVER_METRICS: "true"
-      UN_SONARR_0_URL: http://sonarr.default.svc.cluster.local
-      UN_SONARR_0_PATHS_0: /complete/
-      UN_SONARR_1_URL: http://sonarr-kids.default.svc.cluster.local
-      UN_SONARR_1_PATHS_0: /complete/
-      UN_RADARR_0_URL: http://radarr.default.svc.cluster.local
-      UN_RADARR_0_PATHS_0: /complete/
-      UN_RADARR_1_URL: http://radarr-kids.default.svc.cluster.local
-      UN_RADARR_1_PATHS_0: /complete/
-    envFrom:
-      - secretRef:
-          name: unpackerr-secret
+
+
+values:
+    controllers:
+      main:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          main:
+            image:
+              repository: docker.io/golift/unpackerr
+              tag: 0.12.0
+            env:
+              TZ: America/New_York
+              UN_WEBSERVER_METRICS: "true"
+              UN_SONARR_0_URL: http://sonarr.default.svc.cluster.local
+              UN_SONARR_0_PATHS_0: /media/downloads/qbit_complete
+              UN_SONARR_1_URL: http://sonarr-kids.default.svc.cluster.local
+              UN_SONARR_1_PATHS_0: /media/downloads/qbit_complete
+              UN_RADARR_0_URL: http://radarr.default.svc.cluster.local
+              UN_RADARR_0_PATHS_0: /media/downloads/qbit_complete
+              UN_RADARR_1_URL: http://radarr-kids.default.svc.cluster.local
+              UN_RADARR_1_PATHS_0: /media/downloads/qbit_complete
+            envFrom:
+              - secretRef:
+                  name: unpackerr-secret
+            resources:
+              requests:
+                cpu: 10m
+                memory: 1Gi
+              limits:
+                memory: 4Gi
+        pod:
+          securityContext:
+            runAsUser: 1000
+            runAsGroup: 1000
+            fsGroup: 1000
+            fsGroupChangePolicy: OnRootMismatch
+            supplementalGroups: [10000]
     service:
       main:
         ports:
@@ -55,22 +72,6 @@ spec:
     serviceMonitor:
       main:
         enabled: true
-    podSecurityContext:
-      runAsUser: 1000
-      runAsGroup: 1000
-      fsGroup: 1000
-      fsGroupChangePolicy: OnRootMismatch
-      supplementalGroups: [10000]
     persistence:
-      complete:
-        enabled: true
-        type: nfs
-        server: 10.1.2.205
-        path: /mnt/dead/media/downloads/qbit_complete
-        mountPath: /complete
-    resources:
-      requests:
-        cpu: 10m
-        memory: 250Mi
-      limits:
-        memory: 2000Mi
+      media:
+        existingClaim: media
