@@ -38,6 +38,8 @@ spec:
       UN_WEBSERVER_METRICS: "true"
       UN_SONARR_0_URL: http://sonarr.default.svc.cluster.local
       UN_SONARR_0_PATHS_0: /complete/
+      UN_SONARR_1_URL: http://sonarr-kids.default.svc.cluster.local
+      UN_SONARR_1_PATHS_0: /complete/
       UN_RADARR_0_URL: http://radarr.default.svc.cluster.local
       UN_RADARR_0_PATHS_0: /complete/
       UN_RADARR_1_URL: http://radarr-kids.default.svc.cluster.local
