@@ -20,7 +20,7 @@ resources:
   - ./beer/ks.yaml
   - ./recyclarr/ks.yaml
   - ./radarr-kids/ks.yaml
-  # - ./unpackerr/ks.yaml
+  - ./unpackerr/ks.yaml
   - ./lldap/ks.yaml
   - ./authelia/ks.yaml
   - ./tautulli/ks.yaml
