@@ -7,3 +7,4 @@ resources:
   - ./helmrelease.yaml
   - ./gatus.yaml
   - ./externalsecret.yaml
+  - ./pvc.yaml
