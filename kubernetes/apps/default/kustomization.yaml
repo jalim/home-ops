@@ -6,6 +6,7 @@ resources:
   - ./media-pvc.yaml
 
 # Apps:
+  # - ./authelia/ks.yaml
   - ./home-assistant/ks.yaml
   - ./invidious/ks.yaml
   - ./jellyfin/ks.yaml
@@ -22,7 +23,6 @@ resources:
   - ./radarr-kids/ks.yaml
   - ./unpackerr/ks.yaml
   - ./lldap/ks.yaml
-  - ./authelia/ks.yaml
   - ./tautulli/ks.yaml
   - ./overseerr/ks.yaml
   - ./readarr/ks.yaml
