@@ -22,7 +22,7 @@ resources:
   - ./recyclarr/ks.yaml
   - ./radarr-kids/ks.yaml
   - ./unpackerr/ks.yaml
-  - ./lldap/ks.yaml
+  # - ./lldap/ks.yaml
   - ./tautulli/ks.yaml
   - ./overseerr/ks.yaml
   - ./readarr/ks.yaml
