@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: home-assistant
+  name: home-assistant-code
   namespace: default
 spec:
   interval: 30m
@@ -26,39 +26,30 @@ spec:
   uninstall:
     keepHistory: false
   dependsOn:
-    - name: longhorn
-      namespace: storage
+    - name: home-assistant
+      namespace: default
   values:
     controllers:
       main:
         annotations:
           reloader.stakater.com/auto: "true"
-        initContainers:
-          init-db:
-            image:
-              repository: ghcr.io/onedr0p/postgres-init
-              tag: 14
-              pullPolicy: IfNotPresent
-            envFrom: &envFrom
-              - secretRef:
-                  name: home-assistant-secret
         containers:
           main:
             image:
-              repository: ghcr.io/onedr0p/home-assistant
-              tag: 2023.11.2@sha256:29a2a48386bcd182c97229892ef123f4ee9d4b1dead7e5ea31a2ecc85fa13ab3
+              repository: ghcr.io/coder/code-server
+              tag: 4.19.0
             env:
               TZ: Australia/Perth
-              POSTGRES_HOST: postgres16-rw.database.svc.cluster.local
-              POSTGRES_DB: home_assistant
-            envFrom: *envFrom
-            probes:
-              liveness:
-                enabled: false
-              readiness:
-                enabled: false
-              startup:
-                enabled: false
+            args:
+              - --auth
+              - "none"
+              - --user-data-dir
+              - "/config/.vscode"
+              - --extensions-dir
+              - "/config/.vscode"
+              - "--port"
+              - "80"
+              - /config
             resources:
               requests:
                 cpu: 10m
@@ -75,15 +66,13 @@ spec:
       main:
         ports:
           http:
-            port: 8123
+            port: 80
     ingress:
       main:
         enabled: true
-        className: external
-        annotations:
-          external-dns.alpha.kubernetes.io/target: external.lumu.au
+        className: internal
         hosts:
-          - host: &host hass.lumu.au
+          - host: &host hass-code.lumu.au
             paths:
               - path: /
                 service:
@@ -96,11 +85,3 @@ spec:
       config:
         enabled: true
         existingClaim: home-assistant
-
-
-    # volumeClaimTemplates:
-    #   - name: config
-    #     mountPath: /config
-    #     accessMode: ReadWriteOnce
-    #     size: 5Gi
-    #     storageClass: longhorn
