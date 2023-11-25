@@ -25,9 +25,9 @@ spec:
       retries: 3
   uninstall:
     keepHistory: false
-  dependsOn:
-    - name: home-assistant
-      namespace: default
+  # dependsOn:
+    # - name: home-assistant
+      # namespace: default
   values:
     controllers:
       main:
@@ -85,3 +85,6 @@ spec:
       config:
         enabled: true
         existingClaim: home-assistant
+      second:
+        enabled: true
+        existingClaim: config-home-assistant-0
