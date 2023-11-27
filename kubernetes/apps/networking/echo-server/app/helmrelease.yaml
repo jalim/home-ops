@@ -60,13 +60,13 @@ spec:
           securityContext:
             runAsUser: 568
             runAsGroup: 568
-          topologySpreadConstraints:
-            - maxSkew: 1
-              topologyKey: kubernetes.io/hostname
-              whenUnsatisfiable: DoNotSchedule
-              labelSelector:
-                matchLabels:
-                  app.kubernetes.io/name: *app
+#          topologySpreadConstraints:
+#            - maxSkew: 1
+#              topologyKey: kubernetes.io/hostname
+#              whenUnsatisfiable: DoNotSchedule
+#              labelSelector:
+#                matchLabels:
+#                  app.kubernetes.io/name: *app
     service:
       main:
         ports:
