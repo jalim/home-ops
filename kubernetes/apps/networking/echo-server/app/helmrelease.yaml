@@ -78,6 +78,7 @@ spec:
         className: external
         annotations:
           external-dns.alpha.kubernetes.io/target: home.lumu.au
+          external-dns.alpha.kubernetes.io/cloudflare-proxied: "false"
         hosts:
           - host: &host "{{ .Release.Name }}.lumu.au"
             paths:
