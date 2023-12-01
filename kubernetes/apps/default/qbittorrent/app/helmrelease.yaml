@@ -4,13 +4,12 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: qbittorrent
-  namespace: default
 spec:
   interval: 30m
   chart:
     spec:
       chart: app-template
-      version: 2.2.0
+      version: 2.3.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -31,27 +30,65 @@ spec:
   #   - name: volsync
   #     namespace: volsync
   values:
-    controller:
-      type: statefulset
-      # annotations:
-        # configmap.reloader.stakater.com/reload: qbittorrent-scripts
-        # secret.reloader.stakater.com/reload: cross-seed-secret
-    image:
-      repository: ghcr.io/onedr0p/qbittorrent
-      tag: 4.6.1@sha256:796f135bcb572a3fb3138b0c65034535c0a7b1dcb83940fe12e00cad1b47fcbb
-    env:
-      TZ: Australia/Perth
-      QBITTORRENT__PORT: &port 80
-      QBITTORRENT__BT_PORT: &bittorrentPort 50410
+    controllers:
+      main:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          main:
+            image:
+              repository: ghcr.io/onedr0p/qbittorrent
+              tag: 4.6.1@sha256:796f135bcb572a3fb3138b0c65034535c0a7b1dcb83940fe12e00cad1b47fcbb
+            env:
+              TZ: Australia/Perth
+              QBITTORRENT__PORT: &port 80
+              QBITTORRENT__BT_PORT: &bittorrentPort 50410
+              QBT_Preferences__WebUI__AlternativeUIEnabled: false
+              QBT_Preferences__WebUI__AuthSubnetWhitelistEnabled: true
+              QBT_Preferences__WebUI__AuthSubnetWhitelist: |-
+                10.0.0.0/8
+              QBT_Preferences__WebUI__LocalHostAuth: false
+              QBT_BitTorrent__Session__Interface: eth0
+              QBT_BitTorrent__Session__InterfaceAddress:
+                valueFrom:
+                  fieldRef:
+                    fieldPath: status.podIP
+              QBT_BitTorrent__Session__InterfaceName: eth0
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/v2/app/version
+                    port: *port
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+              startup:
+                enabled: false
+            resources:
+              requests:
+                cpu: 200m
+                memory: 2Gi
+              limits:
+                memory: 16Gi
+        pod:
+          securityContext:
+            runAsUser: 1000
+            runAsGroup: 1000
+            fsGroup: 1000
+            fsGroupChangePolicy: OnRootMismatch
+            supplementalGroups: [10000]
     service:
       main:
         ports:
           http:
             port: *port
-          # cross-seed:
-          #   port: 2468
       bittorrent:
-        enabled: true
+        controller: main
         type: LoadBalancer
         annotations:
           io.cilium/lb-ipam-ips: 10.1.2.23
@@ -60,72 +97,38 @@ spec:
             enabled: true
             port: *bittorrentPort
             protocol: TCP
-            targetPort: *bittorrentPort
-        externalTrafficPolicy: Local
     ingress:
       main:
         enabled: true
-        ingressClassName: internal
-        annotations:
-          nginx.ingress.kubernetes.io/auth-method: GET
-          nginx.ingress.kubernetes.io/auth-url: http://authelia.default.svc.cluster.local/api/verify
-          nginx.ingress.kubernetes.io/auth-signin: https://auth.lumu.au?rm=$request_method
-          nginx.ingress.kubernetes.io/auth-response-headers: Remote-User,Remote-Name,Remote-Groups,Remote-Email
-          nginx.ingress.kubernetes.io/auth-snippet: proxy_set_header X-Forwarded-Method $request_method;
-          nginx.ingress.kubernetes.io/configuration-snippet: |
-            proxy_hide_header "x-webkit-csp";
-            proxy_hide_header "content-security-policy";
-            proxy_hide_header "X-Frame-Options";
-            proxy_set_header Accept-Encoding "";
+        className: internal
         hosts:
-          - host: &host "qb.${SECRET_DOMAIN}"
+          - host: &host "{{ .Release.Name }}.lumu.au"
             paths:
               - path: /
-                pathType: Prefix
+                service:
+                  name: main
+                  port: http
+          - host: &customHost qb.lumu.au
+            paths:
+              - path: /
+                service:
+                  name: main
+                  port: http
         tls:
           - hosts:
               - *host
-    podSecurityContext:
-      runAsUser: 1000
-      runAsGroup: 1000
-      fsGroup: 1000
-      fsGroupChangePolicy: OnRootMismatch
-      supplementalGroups: [10000]
-    volumeClaimTemplates:
-      - name: config
-        mountPath: /config
-        accessMode: ReadWriteOnce
-        size: 1Gi
-        storageClass: longhorn
-    # Note: If downloading very large torrents it might be worth using NFS for your download directory.
-    # Beware if you are downloading torrents directly to a ZFS dataset that dataset will accrue fragmentation.
+              - *customHost
     persistence:
+      config:
+        enabled: true
+        existingClaim: config-qbittorrent-0
+      # completed-script:
+      #   type: configMap
+      #   name: qbittorrent-scripts
+      #   defaultMode: 0775
+      #   globalMounts:
+      #     - path: /scripts/completed.sh
+      #       subPath: completed.sh
+      #       readOnly: true
       media:
-        enabled: true
-        type: nfs
-        server: 10.1.2.205
-        path: /mnt/dead/media
-        mountPath: /media
-      incomplete:
-        enabled: true
-        type: emptyDir
-    resources:
-      requests:
-        cpu: 10m
-        memory: 250Mi
-      limits:
-        memory: 4Gi
-    # sidecars:
-    #   TODO: cross-seed doesn't work with qBittorrent & SQLite
-    #   https://github.com/cross-seed/cross-seed/issues/365
-    #   cross-seed:
-    #     image: ghcr.io/cross-seed/cross-seed:version-5.2.0
-    #     imagePullPolicy: IfNotPresent
-    #     args: ["daemon"]
-    #     volumeMounts:
-    #       - { name: config, mountPath: /config }
-    #       - { name: cross-seed-config, mountPath: /config/config.js, subPath: config.js, readOnly: true }
-    #   reannounce:
-    #     image: ghcr.io/buroa/qbittools:v0.1.1
-    #     imagePullPolicy: IfNotPresent
-    #     args: ["reannounce", "-s", "localhost", "-p", "80"]
+        existingClaim: media
