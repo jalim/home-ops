@@ -8,7 +8,7 @@ spec:
   endpoints:
     - dnsName: "external.${SECRET_DOMAIN}"
       recordType: CNAME
-      targets: ["${SECRET_CLOUDFLARE_TUNNEL_ID}.cfargotunnel.com"]
+      targets: ["ingress.lumu.au"]
     # - dnsName: "home.${SECRET_DOMAIN}"
     #   recordType: A
     #   targets: ["115.70.106.40"]
