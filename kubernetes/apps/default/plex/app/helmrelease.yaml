@@ -93,7 +93,7 @@ spec:
         enabled: true
         className: external
         annotations:
-          external-dns.alpha.kubernetes.io/target: home.mullan.net.au
+          external-dns.alpha.kubernetes.io/target: ingress.lumu.au
           external-dns.alpha.kubernetes.io/cloudflare-proxied: "false"
           nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
         hosts:
