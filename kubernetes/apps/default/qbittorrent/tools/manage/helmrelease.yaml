@@ -81,9 +81,6 @@ spec:
             args: [
               "prune",
               "--exclude-category", "manual",
-              "--exclude-category", "music.collection",
-              "--exclude-category", "music.import",
-              "--exclude-category", "overlord",
               "--include-tag", "expired", # defined in config.yaml
               "--include-tag", "added:7d",
               "--dry-run",
