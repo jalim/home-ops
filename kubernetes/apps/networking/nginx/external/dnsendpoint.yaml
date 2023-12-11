@@ -2,13 +2,10 @@
 apiVersion: externaldns.k8s.io/v1alpha1
 kind: DNSEndpoint
 metadata:
-  name: cloudflared
+  name: nginx-external
   namespace: networking
 spec:
   endpoints:
     - dnsName: "external.${SECRET_DOMAIN}"
       recordType: CNAME
       targets: ["ingress.lumu.au"]
-    # - dnsName: "home.${SECRET_DOMAIN}"
-    #   recordType: A
-    #   targets: ["115.70.106.40"]
