@@ -23,7 +23,7 @@ resources:
   - ./radarr-kids/ks.yaml
   - ./unpackerr/ks.yaml
   - ./lldap/ks.yaml
-  - ./tautulli/ks.yaml
+  # - ./tautulli/ks.yaml
   - ./overseerr/ks.yaml
   - ./readarr/ks.yaml
   - ./smtp-relay/ks.yaml
