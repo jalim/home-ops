@@ -32,8 +32,8 @@ spec:
       enabled: true
       createPrometheusRules: true
     defaultSettings:
-      backupTarget: "s3://longhorn-gs182@auto/"
-      backupTargetCredentialSecret: longhorn
+      backupTarget: "nfs://10.1.2.205:/mnt/dead/longhorn"
+      # backupTargetCredentialSecret: longhorn
       defaultReplicaCount: 3
       backupstorePollInterval: 0
       createDefaultDiskLabeledNodes: true
