@@ -9,3 +9,4 @@ spec:
     requests:
       storage: 5Gi
   volumeName: tautulli-config
+  storageClassName: longhorn
