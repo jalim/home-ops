@@ -41,6 +41,8 @@ spec:
               tag: 2023.12.8
             env:
               TZ: Australia/Perth
+              PLATFORMIO_CORE_DIR: .plattformio
+              PLATFORMIO_GLOBALLIB_DIR: .plattformioLibs
             resources:
               requests:
                 cpu: 5m
