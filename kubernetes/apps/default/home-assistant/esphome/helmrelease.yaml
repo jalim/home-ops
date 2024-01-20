@@ -48,6 +48,8 @@ spec:
               limits:
                 memory: 2Gi
         pod:
+          hostNetwork: true
+          dnsPolicy: ClusterFirstWithHostNet
           securityContext:
             runAsUser: 568
             runAsGroup: 568
