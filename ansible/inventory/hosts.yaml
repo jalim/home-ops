@@ -12,3 +12,6 @@ kubernetes:
         master3:
           ansible_user: luke
           ansible_host: 10.1.2.13
+        master4:
+          ansible_user: luke
+          ansible_host: 10.1.2.14
