@@ -113,3 +113,5 @@ spec:
         existingClaim: media
       incomplete:
         type: emptyDir
+      tmp:
+        type: emptyDir
