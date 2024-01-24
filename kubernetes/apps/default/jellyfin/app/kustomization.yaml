@@ -4,4 +4,5 @@ kind: Kustomization
 namespace: default
 resources:
   - ./service.yaml
-  - ./ingress.yaml
+  - ./pvc.yaml
+  - ./helmrelease.yaml
