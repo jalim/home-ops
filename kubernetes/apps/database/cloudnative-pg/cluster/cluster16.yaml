@@ -51,6 +51,18 @@ spec:
         secretAccessKey:
           name: cloudnative-pg-secret
           key: aws-secret-access-key
+  externalClusters:
+  - name: cluster-backup
+    barmanObjectStore:
+      destinationPath: s3://cnpg-zd6qkutg/
+      endpointURL: https://${SECRET_CLOUDFLARE_ACCOUNT_ID}.r2.cloudflarestorage.com
+      s3Credentials:
+        accessKeyId:
+          name: cloudnative-pg-secret
+          key: aws-access-key-id
+        secretAccessKey:
+          name: cloudnative-pg-secret
+          key: aws-secret-access-key
   # externalClusters:
   #   - name: cnpg-1
   #     connectionParameters:
