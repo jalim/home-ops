@@ -10,6 +10,7 @@ resources:
   - ./home-assistant/ks.yaml
   - ./invidious/ks.yaml
   - ./jellyfin/ks.yaml
+  # - ./jellystat/ks.yaml
   - ./sonarr/ks.yaml
   - ./sonarr-kids/ks.yaml
   - ./radarr/ks.yaml
@@ -27,5 +28,4 @@ resources:
   - ./overseerr/ks.yaml
   - ./readarr/ks.yaml
   - ./smtp-relay/ks.yaml
-  - ./jellystat/ks.yaml
   # - ./test-sec/ks.yaml
