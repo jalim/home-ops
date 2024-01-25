@@ -14,12 +14,12 @@ spec:
   superuserSecret:
     name: cloudnative-pg-secret
   enableSuperuserAccess: true
-  bootstrap:
-    recovery:
-      source: postgres16
-      recoveryTarget:
-        # Time base target for the recovery
-        targetTime: "2024-01-24 11:14:21.00000+02"
+  # bootstrap:
+  #   recovery:
+  #     source: postgres16
+  #     recoveryTarget:
+  #       # Time base target for the recovery
+  #       targetTime: "2024-01-24 11:14:21.00000+02"
   postgresql:
     parameters:
       max_connections: "600"
@@ -48,26 +48,15 @@ spec:
         secretAccessKey:
           name: cloudnative-pg-secret
           key: aws-secret-access-key
-  externalClusters:
-  - name: postgres16
-    barmanObjectStore:
-      destinationPath: s3://cnpg-zd6qkutg/
-      endpointURL: https://${SECRET_CLOUDFLARE_ACCOUNT_ID}.r2.cloudflarestorage.com
-      s3Credentials:
-        accessKeyId:
-          name: cloudnative-pg-secret
-          key: aws-access-key-id
-        secretAccessKey:
-          name: cloudnative-pg-secret
-          key: aws-secret-access-key
   # externalClusters:
-  #   - name: cnpg-1
-  #     connectionParameters:
-  #       # Use the correct IP or host name for the source database
-  #       host: postgres-rw.database.svc.cluster.local
-  #       user: postgres
-  #       dbname: postgres
-  #       sslmode: require
-  #     password:
-  #       name: cloudnative-pg-secret
-  #       key: password
+  # - name: postgres16
+  #   barmanObjectStore:
+  #     destinationPath: s3://cnpg-zd6qkutg/
+  #     endpointURL: https://${SECRET_CLOUDFLARE_ACCOUNT_ID}.r2.cloudflarestorage.com
+  #     s3Credentials:
+  #       accessKeyId:
+  #         name: cloudnative-pg-secret
+  #         key: aws-access-key-id
+  #       secretAccessKey:
+  #         name: cloudnative-pg-secret
+  #         key: aws-secret-access-key

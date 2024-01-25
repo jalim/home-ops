@@ -49,7 +49,7 @@ spec:
               tag: 2024.1.5@sha256:825cc0170b607f518e669400237cf3d777dd86799028ae97a97e8f2f3e51615a
             env:
               TZ: Australia/Perth
-              POSTGRES_HOST: postgres16-rw.database.svc.cluster.local
+              POSTGRES_HOST: postgres17-rw.database.svc.cluster.local
               POSTGRES_DB: home_assistant
             envFrom: *envFrom
             probes:
