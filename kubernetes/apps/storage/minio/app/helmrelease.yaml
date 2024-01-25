@@ -46,7 +46,7 @@ spec:
               MINIO_UPDATE: "off"
             envFrom:
               - secretRef:
-                  name: *app
+                  name: minio-secret
             args:
               - server
               - /data
@@ -114,7 +114,6 @@ spec:
         enabled: true
         className: external
         annotations:
-          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
           nginx.ingress.kubernetes.io/configuration-snippet: |
             more_set_headers "Host $host";
             more_set_headers "X-Forwarded-For $remote_addr"
