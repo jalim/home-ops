@@ -105,6 +105,8 @@ spec:
     persistence:
       config:
         enabled: true
-        existingClaim: radarr-config
+        existingClaim: radarr
+      tmp:
+        type: emptyDir
       media:
         existingClaim: media
