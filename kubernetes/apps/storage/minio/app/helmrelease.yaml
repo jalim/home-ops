@@ -68,8 +68,11 @@ spec:
               startup:
                 enabled: false
             securityContext:
-              privileged: true
-              runAsUser: 99
+              runAsUser: 1000
+              runAsGroup: 1000
+              fsGroup: 1000
+              fsGroupChangePolicy: OnRootMismatch
+              supplementalGroups: [10000]
             resources:
               requests:
                 memory: 100Mi
