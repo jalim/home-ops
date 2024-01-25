@@ -3,7 +3,7 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
-  name: postgres16
+  name: postgres17
 spec:
   instances: 3
   imageName: ghcr.io/cloudnative-pg/postgresql:16.0-10
@@ -16,7 +16,7 @@ spec:
   enableSuperuserAccess: true
   bootstrap:
     recovery:
-      source: cluster-backup
+      source: postgres16
       recoveryTarget:
         # Time base target for the recovery
         targetTime: "2024-01-24 11:14:21.00000+02"
@@ -49,7 +49,7 @@ spec:
           name: cloudnative-pg-secret
           key: aws-secret-access-key
   externalClusters:
-  - name: cluster-backup
+  - name: postgres16
     barmanObjectStore:
       destinationPath: s3://cnpg-zd6qkutg/
       endpointURL: https://${SECRET_CLOUDFLARE_ACCOUNT_ID}.r2.cloudflarestorage.com
