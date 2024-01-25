@@ -27,4 +27,5 @@ resources:
   - ./overseerr/ks.yaml
   - ./readarr/ks.yaml
   - ./smtp-relay/ks.yaml
+  - ./jellystat/ks.yaml
   # - ./test-sec/ks.yaml
