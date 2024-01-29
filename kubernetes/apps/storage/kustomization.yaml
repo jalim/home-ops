@@ -7,4 +7,5 @@ resources:
   - ./snapshot-controller/ks.yaml
   - ./minio/ks.yaml
   - ./volsync/ks.yaml
+  - ./local-path-provisioner/ks.yaml
 #  - ./longhorn-recurring-jobs/ks.yaml
