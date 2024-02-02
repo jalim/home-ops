@@ -14,9 +14,9 @@ spec:
   superuserSecret:
     name: cloudnative-pg-secret
   enableSuperuserAccess: true
-  bootstrap:
-    recovery:
-      source: postgres17
+  # bootstrap:
+  #   recovery:
+  #     source: postgres17
   postgresql:
     parameters:
       max_connections: "600"
@@ -45,15 +45,15 @@ spec:
         secretAccessKey:
           name: cloudnative-pg-secret
           key: aws-secret-access-key
-  externalClusters:
-  - name: postgres17
-    barmanObjectStore:
-      destinationPath: s3://cnpg/
-      endpointURL: http://minio.storage.svc.cluster.local:9000
-      s3Credentials:
-        accessKeyId:
-          name: cloudnative-pg-secret
-          key: aws-access-key-id
-        secretAccessKey:
-          name: cloudnative-pg-secret
-          key: aws-secret-access-key
+  # externalClusters:
+  # - name: postgres17
+  #   barmanObjectStore:
+  #     destinationPath: s3://cnpg/
+  #     endpointURL: http://minio.storage.svc.cluster.local:9000
+  #     s3Credentials:
+  #       accessKeyId:
+  #         name: cloudnative-pg-secret
+  #         key: aws-access-key-id
+  #       secretAccessKey:
+  #         name: cloudnative-pg-secret
+  #         key: aws-secret-access-key
