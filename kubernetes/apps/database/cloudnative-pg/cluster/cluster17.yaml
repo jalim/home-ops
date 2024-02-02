@@ -40,7 +40,7 @@ spec:
         maxParallel: 8
       destinationPath: s3://cnpg/
       endpointURL: http://minio.storage.svc.cluster.local:9000
-      serverName: &currentCluster postgres16-v1
+      serverName: &currentCluster postgres17
       s3Credentials:
         accessKeyId:
           name: cloudnative-pg-secret
