@@ -104,6 +104,6 @@ spec:
     persistence:
       config:
         enabled: true
-        existingClaim: sonarr-kids-config
+        existingClaim: sonarr-kids
       media:
         existingClaim: media
