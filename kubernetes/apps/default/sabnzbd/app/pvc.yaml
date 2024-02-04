@@ -10,16 +10,3 @@ spec:
     requests:
       storage: 1Gi
   storageClassName: ceph-filesystem
-
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: sabnzbd-temp
-  namespace: default
-spec:
-  accessModes: ["ReadWriteMany"]
-  resources:
-    requests:
-      storage: 1Gi
-  storageClassName: longhorn
