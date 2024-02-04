@@ -2,11 +2,11 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: sonarr-kids-config
+  name: sonarr-kids
   namespace: default
 spec:
   accessModes: ["ReadWriteMany"]
   resources:
     requests:
       storage: 15Gi
-  storageClassName: longhorn
+  storageClassName: ceph-filesystem
