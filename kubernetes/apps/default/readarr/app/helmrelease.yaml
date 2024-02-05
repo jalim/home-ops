@@ -43,7 +43,7 @@ spec:
           main:
             image:
               repository: ghcr.io/onedr0p/readarr-develop
-              tag: 0.3.15.2376@sha256:223ec2864396bd5af65c0e8518d1b12b3bed3c1d355687593aa2839ab5e0a466
+              tag: 0.3.18.2411@sha256:c222d855be4e71664a2314ca8d5c37107669c88d52d979a310cc4dc674e00c84
             env:
               COMPlus_EnableDiagnostics: "0"
               PUSHOVER_DEBUG: "false"
