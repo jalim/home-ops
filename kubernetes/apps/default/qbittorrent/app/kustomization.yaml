@@ -2,19 +2,9 @@
 # yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: default
 resources:
-  # - ./externalsecret.yaml
   - ./helmrelease.yaml
-  # - ./volsync.yaml
   - ./gatus.yaml
-  # - ./qbittools-tagging
-# configMapGenerator:
-  # - name: qbittorrent-scripts
-    # files:
-      # - ./config/completed.sh
-  # - name: cross-seed-config-tpl
-  #   files:
-  #     - ./config/config.js
+  - ../../../../templates/volsync
 generatorOptions:
   disableNameSuffixHash: true
