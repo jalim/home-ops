@@ -41,7 +41,7 @@ spec:
           main:
             image:
               repository: ghcr.io/onedr0p/plex-beta
-              tag: 1.40.0.7997-b09370ecd@sha256:a79eaec7e0b84afdaeef391ff06278d878ba60f8440b33baf0e68ff9e25c3897
+              tag: 1.40.0.7998-c29d4c0c8@sha256:f499b062f524e28ae8a478718f2ddbbd2044cd49c91ea313ad5773c239b0d00b
             env:
               TZ: Australia/Perth
             probes:
