@@ -5,18 +5,22 @@ metadata:
   name: audiobookshelf
   namespace: flux-system
 spec:
-  path: ./kubernetes/talos/apps/media/audiobookshelf/app
-  targetNamespace: media
-  sourceRef:
-    kind: GitRepository
-    name: homelab-ops
+  targetNamespace: default
   commonMetadata:
     labels:
-      app.kubernetes.io/name: &appname audiobookshelf
+      app.kubernetes.io/name: *app
+  dependsOn:
+    - name: external-secrets-stores
+  path: ./kubernetes/apps/default/audiobookshelf/app
   prune: true
+  sourceRef:
+    kind: GitRepository
+    name: home-kubernetes
   wait: false
-  interval: 10m
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m
   postBuild:
     substitute:
-      APP: *appname
+      APP: *app
       VOLSYNC_CAPACITY: 5Gi
