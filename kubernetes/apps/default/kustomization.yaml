@@ -6,6 +6,7 @@ resources:
   - ./media-pvc.yaml
 
 # Apps:
+  - ./audiobookshelf/ks.yaml
   - ./authelia/ks.yaml
   - ./home-assistant/ks.yaml
   - ./invidious/ks.yaml
