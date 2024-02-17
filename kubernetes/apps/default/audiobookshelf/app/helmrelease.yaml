@@ -77,6 +77,8 @@ spec:
       main:
         enabled: true
         className: external
+        annotations:
+          external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN}"  
         hosts:
           - host: &host "books.lumu.au"
             paths:
@@ -84,10 +86,6 @@ spec:
                 service:
                   name: main
                   port: http
-        annotations:
-          external-dns.alpha.kubernetes.io/target: ingress.lumu.au
-          external-dns.alpha.kubernetes.io/cloudflare-proxied: "false"
-          nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
         tls:
           - hosts:
               - *host
