@@ -36,7 +36,7 @@ spec:
           main:
             image:
               repository: luigi311/jellyplex-watched
-              tag: 5.0.0-alpine@sha256:95c6a9a3a0bd8162efb83a22baa68322a7390b4280647206c7a3bea39e237922
+              tag: 5.0.0-slim@sha256:0460a7aab661291d0901f81fdfe137eb25a6cbc6b00d4883d6a9ab4029b2d2b2
             env:
               TZ: "Australia/Perth"
               ## Do not mark any shows/movies as played and instead just output to log if they would of been marked.
